@@ -17,6 +17,11 @@ You can install the development version of AmazingJonas like so:
 devtools::install_github("Jooooooonas/AmazingJonas")
 ```
 
+## Here is the current processing stage.
+
+1.  Create a function (logLikVec) that calculates the individual
+    log-likelihood contribution. (currently done)
+
 ## The followings are default texts.
 
 ## Example
