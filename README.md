@@ -19,8 +19,10 @@ devtools::install_github("Jooooooonas/AmazingJonas")
 
 ## Here is the current processing stage.
 
-1.  Create a function (logLikVec) that calculates the individual
+1.  Create a function (amazing) that calculates the individual
     log-likelihood contribution. (currently done)
+2.  Create alogLik(). (currently done)
+3.  Document the functions correctly and find a nice example.
 
 ## The followings are default texts.
 

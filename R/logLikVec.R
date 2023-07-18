@@ -1,5 +1,14 @@
-Amazing <- function(object, pars = NULL, ...){
-  # Don't bother any else arguments
+#' Title
+#'
+#'
+#' @export
+logLikVec <- function(object, ...) UseMethod("logLikVec")
+
+#' Title
+#'
+#' @export
+logLikVec.betareg <- function(object, pars = NULL, ...){
+  # Don't bother with other arguments
   if (!missing(...)) {
     warning("extra arguments discarded")
   }
@@ -26,6 +35,7 @@ Amazing <- function(object, pars = NULL, ...){
   }
 
   # Return the usual attributes for a "logLik" object
+  names(val) <- NULL
   attr(val, "nobs") <- nobs(object)
   attr(val, "df") <- length(coef(object))
   class(val) <- "logLikVec"
