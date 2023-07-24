@@ -1,26 +1,40 @@
-#' Title
+#' Evaluate Log-likelihood Contributions From Specific Observations
+#'
+#' This is a generic function for calculating log-likelihood contributions from
+#' individual observations for a fitted model.
+#'
+#' @param object A fitted model object.(do we need to specify betareg here?)
+#' @param pars A vector of coefficients.
+#' @param ... Further arguments.
 #'
 #'
-#' @export
-logLikVec <- function(object, ...) UseMethod("logLikVec")
+#' @name logLikVec
+NULL
 
-#' Title
-#'
+#' @rdname logLikVec
+#' @export
+logLikVec <- function(object, ...){
+  UseMethod("logLikVec")
+}
+
+#' @rdname logLikVec
 #' @export
 logLikVec.betareg <- function(object, pars = NULL, ...){
-  # Don't bother with other arguments
+  # Discard other arguments
   if (!missing(...)) {
     warning("extra arguments discarded")
   }
 
   # Require pars to be a list of two: mean and precision
+  # No More Requirements! just a plain vector
   if (!is.null(pars)) {
-    object$coefficients$mean <- pars$mean
-    object$coefficients$precision <- pars$precision
+    num_mean <- length(object$coefficients$mean)
+    object$coefficients$mean <- pars[1:num_mean]
+    object$coefficients$precision <- pars[-(1:num_mean)]
   }
 
   # Extract means
-  mu <- object$fitted.values
+  mu <- predict(object = object, type = "response")
 
   # Extract variance
   var <- predict(object = object, type = "variance")
@@ -29,9 +43,9 @@ logLikVec.betareg <- function(object, pars = NULL, ...){
   shape1 <- ((1 - mu) / var - 1 / mu) * mu ^ 2
   shape2 <- shape1 * (1 / mu - 1)
 
-  # Calculate the log-likelihood (need to consider neg alpha&beta??? YES!!!)
+  # Calculate the log-likelihood
   if (any(shape1 <= 0) || any(shape2 <= 0)) val <- -Inf else {
-    val <- dbeta(object$y, shape1 = shape1, shape2 = shape2, log = T)
+    val <- stats::dbeta(object$y, shape1 = shape1, shape2 = shape2, log = T)
   }
 
   # Return the usual attributes for a "logLik" object

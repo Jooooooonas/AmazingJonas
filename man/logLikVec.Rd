@@ -2,10 +2,21 @@
 % Please edit documentation in R/logLikVec.R
 \name{logLikVec}
 \alias{logLikVec}
-\title{Title}
+\alias{logLikVec.betareg}
+\title{Evaluate Log-likelihood Contributions From Specific Observations}
 \usage{
 logLikVec(object, ...)
+
+\method{logLikVec}{betareg}(object, pars = NULL, ...)
+}
+\arguments{
+\item{object}{A fitted model object.(do we need to specify betareg here?)}
+
+\item{...}{Further arguments.}
+
+\item{pars}{A vector of coefficients.}
 }
 \description{
-Title
+This is a generic function for calculating log-likelihood contributions from
+individual observations for a fitted model.
 }

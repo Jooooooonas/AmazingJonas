@@ -1,12 +1,23 @@
 Package: AmazingJonas
-Title: What the Package Does (One Line, Title Case)
+Title: Loglikelihood Adjustment for Beta Regression Models
 Version: 0.0.0.9000
+Date: 2023-07-19
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Jonas", "Liang", 
+           email = "jonasliang7@gmail.com", 
+           role = c("aut", "cre"))
+Description: This package preforms log-likelihood adjustment for beta 
+    regression, using maximum likelihood estimation, by 'betareg' package.
 License: MIT + file LICENSE
 Encoding: UTF-8
+Lazydata: TRUE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Imports: betareg, chandwich, sandwich, stats
+Imports: 
+    betareg (>= 3.1.4),
+    chandwich (>= 1.1.5),
+    sandwich (>= 3.0.2),
+    stats (>= 4.3.1)
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

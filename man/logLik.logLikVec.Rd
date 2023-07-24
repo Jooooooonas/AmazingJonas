@@ -2,10 +2,16 @@
 % Please edit documentation in R/logLik.R
 \name{logLik.logLikVec}
 \alias{logLik.logLikVec}
-\title{Title}
+\title{Sum Log-likelihood Contributions From Individual Observations}
 \usage{
 \method{logLik}{logLikVec}(object, ...)
 }
+\arguments{
+\item{object}{An object of class \code{"logLikVec"} return from a
+\code{logLikVec} method.}
+
+\item{...}{Further arguments.}
+}
 \description{
-Title
+S3 logLik method for logLikVec objects
 }
