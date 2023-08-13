@@ -1,14 +1,14 @@
-#' Internal lax functions
+#' Internal abetareg functions
 #'
-#' Internal lax functions
+#' Internal abetareg functions
 #' @details
 #' These functions are not intended to be called by the user.
-#' @name lax-internal
+#' @name abetareg-internal
 #' @keywords internal
 NULL
 
 #' @keywords internal
-#' @rdname lax-internal
+#' @rdname abetareg-internal
 adj_object <- function(x, cluster = NULL, use_vcov = TRUE, ...) {
   #
   # Make coefficients as the first argument of the individual log-likelihood
@@ -50,6 +50,6 @@ adj_object <- function(x, cluster = NULL, use_vcov = TRUE, ...) {
                                   par_names = names(mle),
                                   name = paste(class(x), collapse = "_"),
                                   mle = mle, H = H, V = V)
-  class(res) <- c("AmazingJonas", "chandwich")
+  class(res) <- c("abetareg", "chandwich")
   return(res)
 }

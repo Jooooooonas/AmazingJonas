@@ -1,4 +1,4 @@
-Package: AmazingJonas
+Package: abetareg
 Title: Loglikelihood Adjustment for Beta Regression Models
 Version: 0.0.0.9000
 Date: 2023-07-19
@@ -7,7 +7,17 @@ Authors@R:
            email = "jonasliang7@gmail.com", 
            role = c("aut", "cre"))
 Description: This package preforms log-likelihood adjustment for beta 
-    regression, using maximum likelihood estimation, by 'betareg' package.
+    regression, using maximum likelihood estimation, by 'betareg' package
+    'betareg' <https://cran.r-project.org/package=betareg>.
+    Adjusted standard errors and an adjusted loglikelihood are provided, using    
+    the 'chandwich' package <https://cran.r-project.org/package=chandwich>
+    and the object-oriented features of the 'sandwich' package 
+    <https://cran.r-project.org/package=sandwich>. The adjustment is based on a 
+    robust sandwich estimator of the parameter covariance matrix, based on the 
+    methodology in Chandler and Bate (2007) <doi:10.1093/biomet/asm015>. This 
+    can be used for cluster correlated data when interest lies in the 
+    parameters of the marginal distributions, or for performing inferences that 
+    are robust to certain types of model misspecification.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Lazydata: TRUE
@@ -21,3 +31,6 @@ Imports:
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Depends: 
+    R (>= 2.10)
+LazyData: true

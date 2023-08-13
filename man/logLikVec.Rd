@@ -10,7 +10,7 @@ logLikVec(object, ...)
 \method{logLikVec}{betareg}(object, pars = NULL, ...)
 }
 \arguments{
-\item{object}{A fitted model object.(do we need to specify betareg here?)}
+\item{object}{A fitted model object.}
 
 \item{...}{Further arguments.}
 
@@ -19,4 +19,19 @@ logLikVec(object, ...)
 \description{
 This is a generic function for calculating log-likelihood contributions from
 individual observations for a fitted model.
+}
+\examples{
+data("sp", package = "abetareg")
+
+x <- sp$performance
+x1 <- (x - 10) / (100 - 10)
+x2 <- (x1 * (length(x) - 1) + 0.5) / length(x)
+sp$performance <- x2
+
+library(betareg)
+fit <- betareg(performance ~ studyh + ea + previous | studyh + sleeph, data = sp)
+summary(fit)
+
+## Check if the sum of individual log-likelihood == total log-likelihood
+all.equal(logLik(fit), logLik(logLikVec(fit)), check.attributes = FALSE)
 }

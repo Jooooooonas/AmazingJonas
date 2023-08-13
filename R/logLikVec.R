@@ -3,10 +3,9 @@
 #' This is a generic function for calculating log-likelihood contributions from
 #' individual observations for a fitted model.
 #'
-#' @param object A fitted model object.(do we need to specify betareg here?)
+#' @param object A fitted model object.
 #' @param pars A vector of coefficients.
 #' @param ... Further arguments.
-#'
 #'
 #' @name logLikVec
 NULL
@@ -19,14 +18,28 @@ logLikVec <- function(object, ...){
 
 #' @rdname logLikVec
 #' @export
+#'
+#' @examples
+#' data("sp", package = "abetareg")
+#'
+#' x <- sp$performance
+#' x1 <- (x - 10) / (100 - 10)
+#' x2 <- (x1 * (length(x) - 1) + 0.5) / length(x)
+#' sp$performance <- x2
+#'
+#' library(betareg)
+#' fit <- betareg(performance ~ studyh + ea + previous | studyh + sleeph, data = sp)
+#' summary(fit)
+#'
+#' ## Check if the sum of individual log-likelihood == total log-likelihood
+#' all.equal(logLik(fit), logLik(logLikVec(fit)), check.attributes = FALSE)
 logLikVec.betareg <- function(object, pars = NULL, ...){
   # Discard other arguments
   if (!missing(...)) {
     warning("extra arguments discarded")
   }
 
-  # Require pars to be a list of two: mean and precision
-  # No More Requirements! just a plain vector
+  # Replace object with the inputted mean and precision
   if (!is.null(pars)) {
     num_mean <- length(object$coefficients$mean)
     object$coefficients$mean <- pars[1:num_mean]

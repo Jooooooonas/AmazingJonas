@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(AmazingJonas)
+library(abetareg)
 
-test_check("AmazingJonas")
+test_check("abetareg")

@@ -4,19 +4,17 @@
 #' following Chandler and Bate (2007).
 #'
 #' @param x A fitted model object with certain associated S3 methods.
-#'   See \strong{Details}.
 #'
 #' @param cluster A vector or factor indicating from which cluster the
-#'   respective loglikelihood contributions from \code{loglik} originate.
+#'   respective log-likelihood contributions from \code{loglik} originate.
 #'   This must have the same length as the vector returned by the
 #'   \code{logLikVec} method for an object like \code{x}.
 #'   If \code{cluster} is not supplied (i.e. is \code{NULL}) then it is
 #'   assumed that each observation forms its own cluster.
-#'   See \strong{Details}.
 #'
 #' @param use_vcov A logical scalar.  Should we use the \code{vcov} S3 method
 #'   for \code{x} (if this exists) to estimate the Hessian of the independence
-#'   loglikelihood to be passed as the argument \code{H} to
+#'   log-likelihood to be passed as the argument \code{H} to
 #'   \code{\link[chandwich]{adjust_loglik}}?
 #'   Otherwise, \code{H} is estimated inside
 #'   \code{\link[chandwich]{adjust_loglik}} using
@@ -27,19 +25,48 @@
 #'   or \code{\link[sandwich:vcovCL]{meatCL}} (if \code{cluster} is not
 #'   \code{NULL}).
 #'
+#' @return An object inheriting from class \code{"chandwich"}.  See
+#'   \code{\link[chandwich]{adjust_loglik}}.
+#'
 #' @references Chandler, R. E. and Bate, S. (2007). Inference for clustered
 #'   data using the independence loglikelihood. \emph{Biometrika},
 #'   \strong{94}(1), 167-183. \doi{10.1093/biomet/asm015}
 #'
+#' @rdname aloglik
 #' @export
+#'
+#' @examples
+#' data("sp", package = "abetareg")
+#'
+#' x <- sp$performance
+#' x1 <- (x - 10) / (100 - 10)
+#' x2 <- (x1 * (length(x) - 1) + 0.5) / length(x)
+#' sp$performance <- x2
+#'
+#' library(betareg)
+#' fit <- betareg(performance ~ studyh + ea + previous | studyh + sleeph, data = sp)
+#' summary(fit)
+#'
+#' adj <- alogLik(fit)
+#' adj2 <- alogLik(fit, cluster = sp$sqpp)
+#' (s1 <- summary(adj))
+#' (s2 <- summary(adj2))
+#'
+#' plot(s2[,3], pch = 16, type = "o", col = "blue", lwd = 2,
+#'      xlab = "covariates", ylab = "SE", main = "Standard Error Difference")
+#' points(s1[,3], pch = 16, type = "o", col = "red", lwd = 2)
+#' points(s1[,2], pch = 16, type = "o", col = "black", lwd = 2)
+#' legend(x = 1, y = 0.3, legend = c("MLE SE", "ADJ SE", "ADJ SE with clusters"),
+#'        col = c("black","red","blue"), lwd = 2, pch = 16, cex = .8)
 alogLik <- function(x, cluster = NULL, use_vcov = TRUE, ...){
   UseMethod("alogLik")
 }
 
+#' @rdname aloglik
 #' @export
 alogLik.betareg <- function(x, cluster = NULL, use_vcov = TRUE, ...) {
   # Call adj_object() to adjust the log-likelihood
   res <- adj_object(x, cluster = cluster, use_vcov = use_vcov, ...)
-  class(res) <- c("AmazingJonas", "chandwich", class(x))
+  class(res) <- c("abetareg", "chandwich", class(x))
   return(res)
 }
