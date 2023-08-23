@@ -6,17 +6,17 @@ Authors@R:
     person("Jonas", "Liang", 
            email = "jonasliang7@gmail.com", 
            role = c("aut", "cre"))
-Description: This package preforms log-likelihood adjustment for beta 
+Description: This package performs log-likelihood adjustments for beta 
     regression, using maximum likelihood estimation, by 'betareg' package
     'betareg' <https://cran.r-project.org/package=betareg>.
-    Adjusted standard errors and an adjusted loglikelihood are provided, using    
-    the 'chandwich' package <https://cran.r-project.org/package=chandwich>
-    and the object-oriented features of the 'sandwich' package 
+    Adjusted standard errors and an adjusted log-likelihood are provided using    
+    'chandwich' package <https://cran.r-project.org/package=chandwich>
+    and the object-oriented features of 'sandwich' package 
     <https://cran.r-project.org/package=sandwich>. The adjustment is based on a 
-    robust sandwich estimator of the parameter covariance matrix, based on the 
-    methodology in Chandler and Bate (2007) <doi:10.1093/biomet/asm015>. This 
-    can be used for cluster correlated data when interest lies in the 
-    parameters of the marginal distributions, or for performing inferences that 
+    robust sandwich estimator of the parameter variance-covariance matrix, based 
+    on the methodology by Chandler and Bate (2007) <doi:10.1093/biomet/asm015>. 
+    This can be used for cluster-correlated data when the interest lies in the 
+    parameters of the marginal distributions or for performing inferences that 
     are robust to certain types of model misspecification.
 License: MIT + file LICENSE
 Encoding: UTF-8
