@@ -3,9 +3,12 @@ Title: Loglikelihood Adjustment for Beta Regression Models
 Version: 0.0.0.9000
 Date: 2023-07-19
 Authors@R: 
-    person("Jonas", "Liang", 
+    c(person("Jonas", "Liang", 
            email = "jonasliang7@gmail.com", 
-           role = c("aut", "cre"))
+           role = c("aut", "cre", "cph")),
+      person(c("Paul", "J."), "Northrop", 
+           email = "p.northrop@ucl.ac.uk",
+           role = c("aut", "cph")))
 Description: This package performs log-likelihood adjustments for beta 
     regression, using maximum likelihood estimation, by 'betareg' package
     'betareg' <https://cran.r-project.org/package=betareg>.
@@ -20,7 +23,6 @@ Description: This package performs log-likelihood adjustments for beta
     are robust to certain types of model misspecification.
 License: MIT + file LICENSE
 Encoding: UTF-8
-Lazydata: TRUE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports: 
@@ -32,5 +34,6 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Depends: 
-    R (>= 2.10)
+    R (>= 3.3.0)
 LazyData: true
+Maintainer: Jonas Liang <jonasliang7@gmail.com>

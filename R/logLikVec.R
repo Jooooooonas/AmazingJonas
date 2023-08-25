@@ -7,6 +7,12 @@
 #' @param pars A vector of coefficients.
 #' @param ... Further arguments.
 #'
+#' @return A vector of individual log-likelihood contributions of class
+#'         \code{"logLikVec"}, computed from \code{"betareg"} object,
+#'         with two additional attributes:
+#'             \item{nobs}{number of observations}
+#'             \item{df}{degrees of freedom}
+#'
 #' @name logLikVec
 NULL
 
@@ -22,17 +28,24 @@ logLikVec <- function(object, ...){
 #' @examples
 #' data("sp", package = "abetareg")
 #'
+#' ## Data scaling suggested by Smithson and Verkuilen (2006)
 #' x <- sp$performance
 #' x1 <- (x - 10) / (100 - 10)
 #' x2 <- (x1 * (length(x) - 1) + 0.5) / length(x)
 #' sp$performance <- x2
 #'
+#' ## Fit the betareg model
 #' library(betareg)
 #' fit <- betareg(performance ~ studyh + ea + previous | studyh + sleeph, data = sp)
 #' summary(fit)
 #'
 #' ## Check if the sum of individual log-likelihood == total log-likelihood
-#' all.equal(logLik(fit), logLik(logLikVec(fit)), check.attributes = FALSE)
+#' all.equal(fit$loglik, sum(logLikVec(fit)), check.attributes = FALSE)
+#'
+#' @references Smithson, Michael & Verkuilen, Jay. (2006). A better lemon
+#'             squeezer? Maximum-likelihood regression with beta-distributed
+#'             dependent variables. Psychological methods. 11. 54-71.
+#'             \doi{10.1037/1082-989X.11.1.54}
 logLikVec.betareg <- function(object, pars = NULL, ...){
   # Discard other arguments
   if (!missing(...)) {

@@ -7,11 +7,42 @@
 \method{logLik}{logLikVec}(object, ...)
 }
 \arguments{
-\item{object}{An object of class \code{"logLikVec"} return from a
+\item{object}{An object of class \code{"logLikVec"} returns from a
 \code{logLikVec} method.}
 
 \item{...}{Further arguments.}
 }
+\value{
+An object of class \code{"logLik"} that sums up all the individual
+log-likelihood contributions from the object of class
+\code{"logLikVec"}. Attributes are saved from \code{"logLikVec"}.
+}
 \description{
 S3 logLik method for logLikVec objects
+}
+\examples{
+data("sp", package = "abetareg")
+
+## Data scaling suggested by Smithson and Verkuilen (2006)
+x <- sp$performance
+x1 <- (x - 10) / (100 - 10)
+x2 <- (x1 * (length(x) - 1) + 0.5) / length(x)
+sp$performance <- x2
+
+## Fit the betareg model
+library(betareg)
+fit <- betareg(performance ~ studyh + ea + previous | studyh + sleeph, data = sp)
+summary(fit)
+
+logLik(logLikVec(fit)) ## This should be the expected sum of log-likelihoods
+
+## Check if the sum of individual log-likelihood == total log-likelihood
+all.equal(logLik(fit), logLik(logLikVec(fit)), check.attributes = FALSE)
+
+}
+\references{
+Smithson, Michael & Verkuilen, Jay. (2006). A better lemon
+squeezer? Maximum-likelihood regression with beta-distributed
+dependent variables. Psychological methods. 11. 54-71.
+\doi{10.1037/1082-989X.11.1.54}
 }

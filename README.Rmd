@@ -34,3 +34,4 @@ devtools::install_github("Jooooooonas/abetareg")
 2. Create alogLik(). (currently done)
 3. Document the functions correctly and find a nice example. (currently done)
 4. Start writing vignettes and reports after stopping calling it AmazingJonas. Now it is package "abetareg".
+5. Reports are half way there now. All functions and data are well-documented with examples and return values.

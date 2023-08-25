@@ -43,20 +43,24 @@ following Chandler and Bate (2007).
 \examples{
 data("sp", package = "abetareg")
 
+## Data scaling suggested by Smithson and Verkuilen (2006)
 x <- sp$performance
 x1 <- (x - 10) / (100 - 10)
 x2 <- (x1 * (length(x) - 1) + 0.5) / length(x)
 sp$performance <- x2
 
+## Fit the betareg model
 library(betareg)
 fit <- betareg(performance ~ studyh + ea + previous | studyh + sleeph, data = sp)
 summary(fit)
 
+## Adjust the log-likelihood
 adj <- alogLik(fit)
 adj2 <- alogLik(fit, cluster = sp$sqpp)
 (s1 <- summary(adj))
 (s2 <- summary(adj2))
 
+## How are the standard errors affected?
 plot(s2[,3], pch = 16, type = "o", col = "blue", lwd = 2,
      xlab = "covariates", ylab = "SE", main = "Standard Error Difference")
 points(s1[,3], pch = 16, type = "o", col = "red", lwd = 2)
@@ -68,4 +72,9 @@ legend(x = 1, y = 0.3, legend = c("MLE SE", "ADJ SE", "ADJ SE with clusters"),
 Chandler, R. E. and Bate, S. (2007). Inference for clustered
 data using the independence loglikelihood. \emph{Biometrika},
 \strong{94}(1), 167-183. \doi{10.1093/biomet/asm015}
+
+Smithson, Michael & Verkuilen, Jay. (2006). A better lemon
+squeezer? Maximum-likelihood regression with beta-distributed
+dependent variables. Psychological methods. 11. 54-71.
+\doi{10.1037/1082-989X.11.1.54}
 }

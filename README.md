@@ -26,3 +26,5 @@ devtools::install_github("Jooooooonas/abetareg")
     done)
 4.  Start writing vignettes and reports after stopping calling it
     AmazingJonas. Now it is package “abetareg”.
+5.  Reports are half way there now. All functions and data are
+    well-documented with examples and return values.
