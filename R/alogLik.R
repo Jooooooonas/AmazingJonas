@@ -36,7 +36,7 @@
 #'             dependent variables. Psychological methods. 11. 54-71.
 #'             \doi{10.1037/1082-989X.11.1.54}
 #'
-#' @rdname aloglik
+#' @rdname alogLik
 #' @export
 #'
 #' @examples
@@ -70,7 +70,7 @@ alogLik <- function(x, cluster = NULL, use_vcov = TRUE, ...){
   UseMethod("alogLik")
 }
 
-#' @rdname aloglik
+#' @rdname alogLik
 #' @export
 alogLik.betareg <- function(x, cluster = NULL, use_vcov = TRUE, ...) {
   # Call adj_object() to adjust the log-likelihood

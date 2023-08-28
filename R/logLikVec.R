@@ -62,10 +62,10 @@ logLikVec.betareg <- function(object, pars = NULL, ...){
   # Extract means
   mu <- predict(object = object, type = "response")
 
-  # Extract variance
+  # Extract variances
   var <- predict(object = object, type = "variance")
 
-  # Change means and precisions to shape1 and shape2
+  # Change means and variances to shape1 and shape2
   shape1 <- ((1 - mu) / var - 1 / mu) * mu ^ 2
   shape2 <- shape1 * (1 / mu - 1)
 
