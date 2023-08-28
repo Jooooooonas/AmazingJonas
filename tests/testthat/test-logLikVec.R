@@ -1,5 +1,5 @@
 set.seed(996)
-# Create a fake data frame
+# Create a pseudo-dataframe
 data <- data.frame(y = stats::rbeta(100, shape1 = 12, shape2 = 34),
                    x1 = stats::rnorm(100, mean = 5, sd = 6),
                    x2 = stats::rgamma(100, shape = 7, rate = 8),
@@ -13,8 +13,17 @@ test_that("logLik() vs. logLik(logLikVec)", {
 })
 
 # Fit beta regression with the covariate in phi
-fit2 <- betareg(y ~ x1 + x2 + x3 | x1, data = data)
+fit2 <- betareg(y ~ x1 + x2 + x3 | x1 + x2, data = data)
 # Test: sum of individual likelihood == total likelihood
 test_that("logLik() vs. logLik(logLikVec)", {
   expect_equal(logLik(fit2), logLik(logLikVec(fit2)), ignore_attr = TRUE)
+})
+
+# Fit beta regression with the covariate in phi
+# and different link functions
+fit3 <- betareg(y ~ x1 + x2 + x3 | x1 + x2, data = data,
+                link = "probit", link.phi = "log")
+# Test: sum of individual likelihood == total likelihood
+test_that("logLik() vs. logLik(logLikVec)", {
+  expect_equal(logLik(fit3), logLik(logLikVec(fit3)), ignore_attr = TRUE)
 })
