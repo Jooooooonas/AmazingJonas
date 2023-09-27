@@ -1,0 +1,109 @@
+---
+title: "An overview of abetareg"
+author: "Jonas Liang"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 4
+vignette: >
+  %\VignetteIndexEntry{An overview of abetareg}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: abetareg.bib
+csl: taylor-and-francis-chicago-author-date.csl
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
+```
+
+The *abetareg* package adjusts the log-likelihood function for beta regression from the [betareg](https://cran.r-project.org/package=betareg) package [@betareg] to provide robust sandwich estimation of parameter covariance matrix. The methodology of the adjustment is based on the [chandwich](https://cran.r-project.org/package=chandwich) package [@chandwich].
+
+According to the description of beta regression, one assumption that we imposed on the response variable is that response values are conditionally independent given the respective values of their covariates.
+However, the actual observations may not be collected independently. In general, observations tend to be gathered with certain patterns, for example, in clusters, for convenience. 
+
+Besides that, we may even incorrectly specify our regression model. For instance, the observations probably follow a distribution that has multiple modes (peaks) or appears to have heavy tails. These are the situations where the beta distribution may become a misspecified model for the regression analysis.
+The assumptions regarding conditionally independent and beta-distributed observations might prove inadequate in various practical domains.
+
+Therefore, the *chandwich* package modifies the log-likelihood function by incorporating a correction factor that accounts for the correlation among clustered observations, following the paper of @CB2007.
+It treats the correlations between observations within the same cluster as a source of additional information rather than a hindrance.
+
+## Beta regression of student performance data
+
+This example dataset by @Narayan_2023 on Kaggle repositories, which is available in the data frame `sp`, is the academic performance of students of 10,000 entries, each encapsulating various predictors and student performance details.
+The response variable is the performance values, which are transformed to be percentages for beta regression.
+Also, we expect to observe discernible variations in students' performances based on different numbers of practices on sample questions.
+
+## Data transformation
+
+To explore deep insights into the response variable, a brief `summary()` function has been employed.
+
+```{r}
+library(abetareg)
+data("sp", package = "abetareg")
+summary(sp$performance)
+```
+
+To summarise the information about the response variable, all of its values are outside the $(0,1)$ bound that is required for beta regression, and the lower and upper bounds, 10 and 100, of "performance" are attained so that the usual linear transforming method is no longer suitable in this case.
+Hence, a new transforming method by @Smithson_Verkuilen_2006 is suggested for scaling a numeric interval into the standard unit interval $(0,1)$. 
+
+```{r}
+# Data scaling suggested by Smithson and Verkuilen (2006)
+x <- sp$performance
+x1 <- (x - 10) / (100 - 10)
+x2 <- (x1 * (length(x) - 1) + 0.5) / length(x)
+sp$performance <- x2
+summary(sp$performance)
+```
+
+Besides, opting for a histogram can offer us a more insightful means of visualising the distribution of the response variable.
+
+```{r, fig.align='center', fig.width=7, fig.height=5}
+hist(sp[,6], main = "Scaled Student Preformance Distribution", 
+     xlab = "Performance", col = "lightblue", cex.main = 1.7)
+```
+
+## Standard errors and confidence intervals
+
+The `betareg()` function fits a beta regression model for the response variable. The regressors consist of two types: one for the mean parameter, and the other for the precision parameter.
+
+```{r}
+library(betareg)
+opt_naive <- betareg(performance ~ studyh + ea | sleeph, data = sp)
+adj_naive <- alogLik(opt_naive)
+(s1 <- summary(adj_naive))
+```
+As mentioned, the clustered data structure can be considered as an additional source of information during the log-likelihood adjustment.
+
+```{r}
+adj_naive2 <- alogLik(opt_naive, cluster = sp$sqpp)
+(s2 <- summary(adj_naive2))
+```
+An illustrative figure was presented as follows. The first three estimated parameters have lower standard errors after considering the clustered dependence structure.
+
+```{r, fig.align='center', fig.width=7, fig.height=5}
+# How are the standard errors affected?
+plot(s2[,3], pch = 16, type = "o", col = "blue", lwd = 2,
+     xlab = "covariates", ylab = "SE", main = "Standard Error Difference",
+     cex.main = 1.7)
+points(s1[,3], pch = 16, type = "o", col = "red", lwd = 2)
+points(s1[,2], pch = 16, type = "o", col = "black", lwd = 2)
+legend(x = 1, y = 0.06, legend = c("MLE SE", "ADJ SE", "ADJ SE with clusters"),
+       col = c("black","red","blue"), lwd = 2, pch = 16, cex = 1.2)
+```
+
+Also, the approximate 90\% confidence intervals can be constructed using `confint()` method from the *chandwich* package. Smaller standard errors effectively provide more robust confidence intervals.
+
+```{r}
+library(chandwich)
+confint(opt_naive, level = 0.9)
+confint(adj_naive, level = 0.9, profile = F)
+confint(adj_naive2, level = 0.9, profile = F)
+```
+
+## References
+
+<script type="text/x-mathjax-config">
+   MathJax.Hub.Config({  "HTML-CSS": { minScaleAdjust: 125, availableFonts: [] }  });
+</script>
