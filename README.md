@@ -54,7 +54,6 @@ To get the current released version from CRAN:
 
 ``` r
 install.packages("abetareg")
-#> Warning: package 'abetareg' is in use and will not be installed
 ```
 
 ### Vignette

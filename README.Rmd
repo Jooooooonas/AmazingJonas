@@ -47,7 +47,7 @@ adj_naive2 <- alogLik(opt_naive, cluster = sp$sqpp)
 
 To get the current released version from CRAN:
 
-``` {r}
+``` {r, warning = FALSE}
 install.packages("abetareg")
 ```
 
